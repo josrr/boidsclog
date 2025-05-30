@@ -5,14 +5,6 @@
 
 (setf lparallel:*kernel* (lparallel:make-kernel 8))
 
-(defun draw-boids% (boids)
-  (lambda (points)
-    (loop for boid in boids
-          for i from 0 by 2
-          do (multiple-value-bind (x y) (boids:draw boid)
-               (setf (aref points i) x
-                     (aref points (1+ i)) y)))))
-
 (defun draw-boids (boids)
   (lambda (points)
     (lparallel:pmap nil
@@ -28,14 +20,10 @@
                   (lambda (boid)
                     (boids:update-velocity boid boids parameters (3dv:vec2)))
                   boids)
-  #|(loop for boid in boids
-        do (boids:update-velocity boid boids parameters (3dv:vec2)))|#
   (lparallel:pmap nil
                   (lambda (boid)
                     (boids:update-location boid))
-                  boids)
-  #|(loop for boid in boids
-        do (boids:update-location boid))|#)
+                  boids))
 
 (defun on-new-window (body)
   (handler-case
@@ -65,13 +53,11 @@
           (create-gui-menu-item actions :content "Pause" :on-click (lambda (obj)
                                                                      (declare (ignore obj))
                                                                      (setf pausep (not pausep))))
-          ;;(create-gui-menu-item actions :content "Reset" :on-click (create-on-reset minskytron switches))
           (format *debug-io* "~D x ~D~%" (drawing-buffer-width gl) (drawing-buffer-height gl))
           (add-style sb :element "canvas" '(("width" "90vmin") ("height" "90vmin")))
           (add-class canvas "w3-black")
           (set-border canvas :medium :solid "#0066aa")
           (set-margin canvas "6px" "6px" "6px" "6px")
-          ;;(setf (display div-canvas) :flex (align-items div-canvas) :center (justify-content div-canvas) :center)
           (enable-capability gl :BLEND)
           (blend-function gl :ONE :ONE_MINUS_SRC_ALPHA)
           (clear-color gl 0.0f0 0.0f0 0.0f0 1.0f0)

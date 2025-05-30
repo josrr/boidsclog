@@ -22,21 +22,7 @@
 (defgeneric draw (object &optional pane &rest drawing-options))
 
 (defmethod draw ((boid boid) &optional (pane *standard-output*) &rest drawing-options)
-  ;;let ((boid-width 8.0) (boid-length 16.0))
-  (with-accessors (;;(velocity velocity)
-                   (location location)) boid
-    #|(let* ((direction (if (zerop (3dv:vlength velocity))
-    (3dv:vec2 0.0 -1.0)
-    (3dv:v/ velocity (3dv:v2norm velocity))))
-    (p0 (3dv:v* direction boid-length 0.5))
-    (p1 (3dv:v* direction boid-length -0.5))
-    (p2 (3dv:v* direction boid-length -0.5)))
-    (3dv:nv+ p0 location)
-    (3dv:nv+ p1 location (3dv:v* (3dv:vrot2 direction (/ pi 2)) boid-width 0.5))
-    (3dv:nv+ p2 location (3dv:v* (3dv:vrot2 direction (/ pi -2)) boid-width 0.5))
-    ;;(apply #'draw-polygon* pane (list (3dv:vx p0) (3dv:vy p0) (3dv:vx p1) (3dv:vy p1) (3dv:vx p2) (3dv:vy p2)) drawing-options)
-    )|#
-    #|(apply #'draw-point* pane (3dv:vx location) (3dv:vy location) :line-thickness boid-width drawing-options)|#
+  (with-accessors ((location location)) boid
     (values (3dv:vx location) (3dv:vy location))))
 
 (defgeneric update-location (object))
@@ -46,7 +32,6 @@
 (defmethod update-location ((boid boid))
   (declare (optimize (speed 3)))
   (3dv:nv+ (location boid) (velocity boid)))
-
 
 (defparameter *min-speed* 3.0)
 (defparameter *max-speed* 40.0)
@@ -58,7 +43,7 @@
            (rule boid boids parameters 1)
            (rule boid boids parameters 2)
            (rule boid boids parameters 3))
-  ;;(3dv:v* (3dv:v- destination (location boid)) 0.001)
+  #|(3dv:v* (3dv:v- destination (location boid)) 0.001)|#
   (rule boid boids parameters 4)
   (let ((speed (3dv:vlength (velocity boid))))
     (declare (type single-float speed))
