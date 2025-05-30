@@ -1,0 +1,58 @@
+#+TITLE: boidsclog: boids algorithm implemented with CLOG
+#+OPTIONS: toc:nil num:nil
+#+LANGUAGE: es
+#+UNNUMBERED: t
+
+Boidsclog is an implementation of the boids algorithm using [[https://github.com/rabbibotton/clog][CLOG]].
+
+* Screenshots
+
+#+NAME:   fig:boids01
+#+ATTR_HTML: :class img-responsive centered
+[[./boidsclog.gif]]
+
+* How to run the program
+
+To run the program, clone [[https://github.com/josrr/boidsclog][this]] repository in your Quicklisp
+=local-projects= directory
+
+#+BEGIN_SRC
+ $ cd ~/quicklisp/local-projects/
+ $ git clone https://github.com/josrr/boidsclog.git
+#+END_SRC
+
+then:
+
+#+BEGIN_SRC
+ $ sbcl
+ This is SBCL 2.2.6, an implementation of ANSI Common Lisp.
+ More information about SBCL is available at <http://www.sbcl.org/>.
+
+ SBCL is free software, provided as is, with absolutely no warranty.
+ It is mostly in the public domain; some portions are provided under
+ BSD-style licenses.  See the CREDITS and COPYING files in the
+ distribution for more information.
+
+ * (ql:register-local-projects)
+ NIL
+ * (ql:quickload "boidsclog")
+ To load "boidsclog":
+   Load 1 ASDF system:
+     boidsclog
+ ; Loading "boidsclog"
+ ..................................................
+ .....
+ ("boidsclog")
+ * (boidsclog:start)
+#+END_SRC
+
+
+
+# boidsclog
+### _Your Name <your.name@example.com>_
+
+This is a project to do ... something.
+
+## License
+
+Specify license here
